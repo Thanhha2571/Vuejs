@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List App</title>
+    <link rel="styleSheet" href="main.css">
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+    <div id="shopping-list">
+        <h1>{{header}}</h1>
+        <button @click="handleForm(true)">Add Item</button>
+        <button @click="handleForm(false)">Cancel</button>
+        <div v-if="editingForm">
+            <h1>{{header}}</h1>
+            <input @keyup.enter="saveItems" v-model="newItem" type="text" placeholder="Adding a item" />
+            <button @click="saveItems">Add</button>
+            <p v-if="items.length === 0">You have alreday bought all items</p>
+            <ol>
+                <li v-for="item in items" :key="item.id" :class="{strikeout: item.purchase, price:}">{{item.name}}</li>
+            </ol>
+        </div>
+    </div>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    header: 'Shopping List',
+                    editingForm: false,
+                    newItem: "",
+                    items: [
+                        {
+                            id: 1,
+                            name: 'Milk',
+                            purchase: true,
+                            highPrice:true,
+                        },
+                        {
+                            id: 2,
+                            name: 'Bread',
+                            purchase: true,
+                            highPrice:false,
+                        },
+                        {
+                            id: 3,
+                            name: 'Eggs',
+                            purchase: false,
+                            highPrice:false,
+                        },
+                    ]
+                }
+            },
+            methods: {
+                saveItems() {
+                    this.items.push({ id: this.items.length + 1, name: this.newItem })
+                    this.newItem = ""
+                },
+                handleForm(editingForm) {
+                    this.editingForm = editingForm
+                }
+            }
+        }).mount('#shopping-list')
+    </script>
+</body>
+
+</html>
